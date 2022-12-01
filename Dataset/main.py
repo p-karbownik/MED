@@ -1,5 +1,5 @@
+from HashtagDataSet import TweetsHashtagsDS
 import argparse
-from Dataset.HashtagDataSet import TweetsHashtagsDS
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--tag', type=str, default="kaczynski")
@@ -8,11 +8,9 @@ args = parser.parse_args()
 
 
 def main():
-    ds = TweetsHashtagsDS("kaczynski")
-    ds.load_df()
-    df = ds.get_df()
-    if df is not None:
-        print(df.head())
+    ds = TweetsHashtagsDS(args.tag)
+    ds.get_tweets()
+    ds.save_df()
 
 
 if __name__ == '__main__':
