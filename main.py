@@ -8,7 +8,7 @@ args = parser.parse_args()
 
 
 def main():
-    ds = TweetsHashtagsDS("kaczynski")
+    ds = TweetsHashtagsDS(args.tag)
     ds.load_df()
     df = ds.get_df()
     if df is not None:

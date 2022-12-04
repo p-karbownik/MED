@@ -8,6 +8,6 @@ pip install -r requirements.txt
 ## 2. Stworzenie datasetu:
 ```dataset
 cd Dataset/
-python main.py --tag [TAG]
+python main.py --tag [TAG] --number [NUMBER_OF_TWEETS]
 ```
-Podanie tag'u jest opcjonalne, w przypadku jego braku, program weźmie wartość domyślną.
+Podanie obu parametrów jest opcjonalne, w przypadku ich braku, program weźmie wartości domyślne.
