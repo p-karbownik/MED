@@ -13,6 +13,7 @@ class TweetsHashtagsDS:
         separators = [",", ".", "\\", ";", "|", "'", "?", ")", "!", "-", ":"]
         tweets_tags_list = []
 
+        last_inserted_index = 0
         for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'#{self.hash_tag}').get_items()):
             if i > max_tweets:
                 break
@@ -20,13 +21,18 @@ class TweetsHashtagsDS:
                 print(i)
             content = tweet.content.split()
             hash_tags = [word for word in content if word.startswith("#")]
+            hash_tags_list = []
             for tag in hash_tags:
                 for sep in separators:
                     if sep in tag:
                         tag = tag.split(sep)
                         tag = tag[0]
                 if len(tag) > 1:
-                    tweets_tags_list.append([i, unidecode(tag.lower())])
+                    hash_tags_list.append([last_inserted_index, unidecode(tag.lower())])
+
+            if len(hash_tags_list) > 0:
+                tweets_tags_list.extend(hash_tags_list)
+                last_inserted_index += 1
 
         self._df = pd.DataFrame(tweets_tags_list, columns=['tweet_id', 'tag'])
 
