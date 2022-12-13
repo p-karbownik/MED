@@ -5,17 +5,18 @@ from unidecode import unidecode
 
 class TweetsHashtagsDS:
 
-    def __init__(self, hash_tag):
+    def __init__(self, hash_tag, number=None):
         self._df = None
         self.hash_tag = hash_tag
+        self._max_tweets = number
 
-    def get_tweets(self, max_tweets) -> None:
+    def get_tweets(self) -> None:
         separators = [",", ".", "\\", ";", "|", "'", "?", ")", "!", "-", ":"]
         tweets_tags_list = []
-
+        print(self.hash_tag)
         last_inserted_index = 0
-        for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'#{self.hash_tag}').get_items()):
-            if i > max_tweets:
+        for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'{self.hash_tag}').get_items()):
+            if i > self._max_tweets:
                 break
             if i % 500 == 0:
                 print(i)
