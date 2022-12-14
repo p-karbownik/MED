@@ -1,18 +1,21 @@
+from declat.readDataset import read_data_set
+from declat.declat import DECLATRunner
+from declat.declat import decode_result
+from ploting.lattice import LatticePlotter
 import argparse
-from Dataset.HashtagDataSet import TweetsHashtagsDS
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--tag', type=str, default="kaczynski")
+parser.add_argument('--name', type=str, default="test")
 
 args = parser.parse_args()
 
 
 def main():
-    ds = TweetsHashtagsDS(args.tag)
-    ds.load_df()
-    df = ds.get_df()
-    if df is not None:
-        print(df.head())
+    ds = read_data_set(f"Dataset/{args.name}.csv")
+    dr = DECLATRunner()
+    results = decode_result(dr.run(ds, 6), len(ds.transactions))
+    lp = LatticePlotter(results, args.name)
+    lp.plot_lattice()
 
 
 if __name__ == '__main__':

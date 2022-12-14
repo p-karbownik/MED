@@ -1,4 +1,4 @@
-from readDataset import DataSet
+from .readDataset import DataSet
 
 
 class FrequentSet:
@@ -83,8 +83,12 @@ class DECLATRunner:
 
 def decode_result(result, transactions_number):
     print("Frequent items set | Support")
+    decoded = []
     for item in result:
-        print(str(item) + ' | ' + str(item.calculate_support(transactions_number)))
+        support = item.calculate_support(transactions_number)
+        print(str(item) + ' | ' + str(support))
+        decoded.append([str(item), support])
+    return decoded
 
 
 def calculate_diff_set(rule: set, transactions: dict):

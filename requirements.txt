@@ -1,3 +1,6 @@
 snscrape
 pandas
 unidecode
+networkx
+matplotlib
+scipy

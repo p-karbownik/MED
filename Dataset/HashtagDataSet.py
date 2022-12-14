@@ -3,6 +3,19 @@ import pandas as pd
 from unidecode import unidecode
 
 
+def process_tag_list(hash_tags, last_inserted_index):
+    separators = [",", ".", "\\", ";", "|", "'", "?", ")", "!", "-", ":"]
+    processed = []
+    for tag in hash_tags:
+        for sep in separators:
+            if sep in tag:                  # if tag contains separator, get only base of it
+                tag = tag.split(sep)
+                tag = tag[0]
+        if len(tag) > 1:
+            processed.append([last_inserted_index, unidecode(tag.lower())])
+    return processed
+
+
 class TweetsHashtagsDS:
 
     def __init__(self, hash_tag, number=None):
@@ -11,7 +24,6 @@ class TweetsHashtagsDS:
         self._max_tweets = number
 
     def get_tweets(self) -> None:
-        separators = [",", ".", "\\", ";", "|", "'", "?", ")", "!", "-", ":"]
         tweets_tags_list = []
         print(self.hash_tag)
         last_inserted_index = 0
@@ -20,16 +32,10 @@ class TweetsHashtagsDS:
                 break
             if i % 500 == 0:
                 print(i)
+
             content = tweet.content.split()
             hash_tags = [word for word in content if word.startswith("#")]
-            hash_tags_list = []
-            for tag in hash_tags:
-                for sep in separators:
-                    if sep in tag:
-                        tag = tag.split(sep)
-                        tag = tag[0]
-                if len(tag) > 1:
-                    hash_tags_list.append([last_inserted_index, unidecode(tag.lower())])
+            hash_tags_list = process_tag_list(hash_tags, last_inserted_index)
 
             if len(hash_tags_list) > 0:
                 tweets_tags_list.extend(hash_tags_list)
