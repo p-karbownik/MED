@@ -81,12 +81,14 @@ class DECLATRunner:
         return result
 
 
-def decode_result(result, transactions_number):
-    print("Frequent items set | Support")
+def decode_result(result, transactions_number, show_results):
+    if show_results:
+        print("Frequent items set | Support")
     decoded = []
     for item in result:
         support = item.calculate_support(transactions_number)
-        print(str(item) + ' | ' + str(support))
+        if show_results:
+            print(str(item) + ' | ' + str(support))
         decoded.append([str(item), support])
     return decoded
 

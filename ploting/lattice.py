@@ -1,12 +1,12 @@
-import networkx as nx
-import pandas as pd
 import matplotlib.pyplot as plt
+import networkx as nx
 from matplotlib.pyplot import text
 
 
 class LatticePlotter:
-    def __init__(self, decoded_results, name):
+    def __init__(self, decoded_results, name, support):
         self._name = name
+        self._support = support
         self._results = decoded_results
         self._from_node = []
         self._to_node = []
@@ -108,6 +108,8 @@ class LatticePlotter:
         for node, _ in lay.items():
             coords = pos.get(node)
             text(coords[0], coords[1], node, fontsize=6, ha='center', va='center')
+
+        plt.title(f"Lattice for DS: {self._name} with Min Supp: {self._support}")
 
         nx.draw(g, pos=pos, with_labels=False, font_size=11)
         # we can show or save graph, not both
