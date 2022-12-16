@@ -1,15 +1,7 @@
 import networkx as nx
 import pandas as pd
 import matplotlib.pyplot as plt
-
-
-def find_max_tags_num(results):
-    max_tags = 0
-    for record in results:
-        tags = record[0].count("#")
-        if tags > max_tags:
-            max_tags = tags
-    return max_tags
+from matplotlib.pyplot import text
 
 
 class LatticePlotter:
@@ -20,17 +12,23 @@ class LatticePlotter:
         self._to_node = []
         self._levels_capacity = [1]
         self._levels = [["{}"]]
-        self._x_dist = 1
-        self._y_dist = 1
 
     def plot_lattice(self):
-        max_level = find_max_tags_num(self._results)
+        max_level = self._find_max_tags_num()
 
         previous_level = self._create_first_level()
         for i in range(2, max_level + 1):
             previous_level = self._create_next_level(i, previous_level)
         
         self._create_graph()
+
+    def _find_max_tags_num(self):
+        max_tags = 0
+        for record in self._results:
+            tags = record[0].count("#")
+            if tags > max_tags:
+                max_tags = tags
+        return max_tags
 
     def _create_first_level(self):
         first_level = []
@@ -85,33 +83,37 @@ class LatticePlotter:
     def _create_graph(self):
         g = nx.Graph()
 
-        max_nodes_in_level = max(self._levels_capacity)
-
-        max_x = self._x_dist * max_nodes_in_level
+        max_nodes_in_single_level = max(self._levels_capacity)
 
         level = 0
         node_num = 0
         legend = {}
         for nodes, nodes_num in zip(self._levels, self._levels_capacity):
-            starting_x = max_x / nodes_num
+            starting_x = max_nodes_in_single_level / (nodes_num+1)
             for i in range(len(nodes)):
-                y = level * self._y_dist
-                x = starting_x / 2 + i * self._x_dist
-                g.add_node(node_num, pos=(x, y))
+                x = starting_x * (i+1)
+                # g.add_node(i, pos=(x, level))
+                g.add_node(nodes[i], pos=(x, level))
                 legend.update({nodes[i]: node_num})
                 node_num += 1
             level += 1
 
         for from_n, to_n in zip(self._from_node, self._to_node):
-            g.add_edge(legend.get(from_n), legend.get(to_n))
+            g.add_edge(from_n, to_n)
+            # g.add_edge(legend.get(from_n), legend.get(to_n))
 
         pos = nx.get_node_attributes(g, 'pos')
+        lay = nx.spring_layout(g)
 
-        nx.draw(g, pos=pos, with_labels=True)
+        for node, _ in lay.items():
+            coords = pos.get(node)
+            text(coords[0], coords[1], node, fontsize=6, ha='center', va='center')
+
+        nx.draw(g, pos=pos, with_labels=False, font_size=11)
         # we can show or save graph, not both
         # plt.show(block=False)
+        plt.rcParams.update({'font.size': 9})
         plt.savefig(f"results/{self._name}.png", format="PNG")
 
-        df = pd.DataFrame.from_dict(legend.items()).set_index(1)
-        df.to_csv(f"results/{self._name}.csv", header=False)
-
+        # df = pd.DataFrame.from_dict(legend.items()).set_index(1)
+        # df.to_csv(f"results/{self._name}.csv", header=False)
