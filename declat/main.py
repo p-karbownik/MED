@@ -4,7 +4,7 @@ from declat import decode_result
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path', type=str, default="../Dataset/test.csv")
+parser.add_argument('--path', type=str, default="../dataset/test.csv")
 
 args = parser.parse_args()
 

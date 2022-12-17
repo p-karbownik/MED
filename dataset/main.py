@@ -1,4 +1,4 @@
-from HashtagDataSet import TweetsHashtagsDS
+from hashtag_data_set import TweetsHashtagsDS
 
 
 def main():

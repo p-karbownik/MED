@@ -1,4 +1,4 @@
-from readDataset import DataSet
+from .readDataset import DataSet
 
 
 class FrequentSet:
@@ -22,7 +22,7 @@ class FrequentSet:
         return len(self.diff_set)
 
     def calculate_support(self, transactions_number):
-        return transactions_number - len(self.items)
+        return transactions_number - len(self.diff_set)
 
 
 class DECLATRunner:
@@ -53,6 +53,9 @@ class DECLATRunner:
 
         return classes
 
+    def calculate_diffset(self, diff_set: set, element):
+        return diff_set.union(self.elements_dict[element])
+
     def do_declat(self, rules_from_previous_step, classes):
         new_rules = set()
 
@@ -60,7 +63,7 @@ class DECLATRunner:
             for c in classes:
                 if not r.items.__contains__(c):
                     new_rule = r.items.union({c})
-                    diff_set = calculate_diff_set(new_rule, self.dataset.transactions)
+                    diff_set = self.calculate_diffset(r.diff_set, c)
                     if len(self.dataset.transactions) - len(diff_set) >= self.minimal_support:
                         new_rules.add(FrequentSet(new_rule, diff_set))
 
@@ -78,10 +81,16 @@ class DECLATRunner:
         return result
 
 
-def decode_result(result, transactions_number):
-    print("Rule | Support")
+def decode_result(result, transactions_number, show_results):
+    if show_results:
+        print("Frequent items set | Support")
+    decoded = []
     for item in result:
-        print(str(item) + ' | ' + str(item.calculate_support(transactions_number)))
+        support = item.calculate_support(transactions_number)
+        if show_results:
+            print(str(item) + ' | ' + str(support))
+        decoded.append([str(item), support])
+    return decoded
 
 
 def calculate_diff_set(rule: set, transactions: dict):
