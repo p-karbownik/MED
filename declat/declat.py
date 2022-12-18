@@ -81,7 +81,8 @@ class DECLATRunner:
         return result
 
 
-def decode_result(result, transactions_number, show_results):
+
+def decode_result(result, transactions_number, show_results: bool):
     if show_results:
         print("Frequent items set | Support")
     decoded = []
@@ -91,6 +92,19 @@ def decode_result(result, transactions_number, show_results):
             print(str(item) + ' | ' + str(support))
         decoded.append([str(item), support])
     return decoded
+
+
+def get_support_values_list(results, transactions_number):
+    support_set = set()
+
+    for result in results:
+        support_set.add(result.calculate_support(transactions_number))
+
+    return sorted(support_set)
+
+
+def get_max_support_value(results, transactions_number):
+    return max(get_support_values_list(results, transactions_number))
 
 
 def calculate_diff_set(rule: set, transactions: dict):
