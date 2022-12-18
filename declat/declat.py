@@ -81,7 +81,6 @@ class DECLATRunner:
         return result
 
 
-
 def decode_result(result, transactions_number, show_results: bool):
     if show_results:
         print("Frequent items set | Support")
