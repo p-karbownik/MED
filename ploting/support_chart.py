@@ -26,8 +26,8 @@ class ChartPlotter:
         for i in range(len(quantity)):
             plt.annotate(str(quantity[i]), xy=(supports[i], quantity[i]), ha='center', va='bottom')
 
-        plt.title("Dataset: " + self._ds_name + "   Minimal support: " + str(unique[0]))
+        plt.title("Number of frequent itemsets for DS: " + self._ds_name + " (with minimal support: " + str(unique[0]) + ")")
         plt.xlabel("Support")
-        plt.ylabel("Sets number")
+        plt.ylabel("Number of frequent itemsets")
         plt.savefig(f"results/{self._ds_name}_support.png", format="PNG")
         plt.show()
