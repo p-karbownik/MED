@@ -5,9 +5,13 @@
 pip install -r requirements.txt
 ```
 
-## 2. Stworzenie datasetu:
-```dataset
-cd Dataset/
-python main.py --tag [TAG] --number [NUMBER_OF_TWEETS]
+## 2. Struktura projektu
+```struktura
+MED
+  |--dataset
+  |--declat
+  |--experiments
+  |--plotting
+  |--results
+     |-- time
 ```
-Podanie obu parametrów jest opcjonalne, w przypadku ich braku, program weźmie wartości domyślne.
