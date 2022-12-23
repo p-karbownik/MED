@@ -4,3 +4,4 @@ unidecode
 networkx
 matplotlib
 scipy
+bitarray
