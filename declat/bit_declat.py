@@ -1,4 +1,4 @@
-from .readDataset import DataSet
+from readDataset import DataSet
 from bitarray import bitarray
 
 
@@ -16,13 +16,7 @@ class FrequentSet:
         if not isinstance(other, FrequentSet):
             return NotImplemented
 
-        same_elements = 0
-
-        for i in other.items:
-            if self.items.__contains__(i):
-                same_elements += 1
-
-        return same_elements == len(self.items)
+        return self.items == other.items
 
     def __hash__(self):
         return hash(self.items)
@@ -38,7 +32,7 @@ class BitDECLATRunner:
     def run(self):
         self._prepare_dict()
         first_rules = self._first_step()
-        return first_rules.union(self._do_declat(first_rules))
+        return first_rules.union(self._do_declat(first_rules, self._find_classes(first_rules)))
 
     def _prepare_dict(self):
         for e in self.dataset.elements:
@@ -74,20 +68,20 @@ class BitDECLATRunner:
             sum_of_bits += int(bit)
         return sum_of_bits
 
-    def _do_declat(self, previous_rules):
+    def _do_declat(self, previous_rules, classes):
         new_rules = set()
 
-        for r1 in previous_rules:
-            for r2 in previous_rules:
-                if len(r1.items.intersection(r2.items)) == len(r1.items)-1:
-                    new_rule = r1.items.union(r2.items)
-                    diff_set = self._calculate_diffset(r1.diff_set, r2.diff_set)
-                    support = r1.support - self.count_elements_in_array(diff_set)
+        for r in previous_rules:
+            for c in classes:
+                if not r.items.__contains__(c):
+                    new_rule = r.items.union({c})
+                    diff_set = self._calculate_diffset(r.diff_set, self.elements_dict.get(c))
+                    support = len(self.dataset.transactions) - self.count_elements_in_array(diff_set)
                     if support >= self.minimal_support:
                         new_rules.add(FrequentSet(new_rule, diff_set, support))
 
         if len(new_rules) != 0:
-            return new_rules.union(self._do_declat(new_rules))
+            return new_rules.union(self._do_declat(new_rules, self._find_classes(new_rules)))
         else:
             return set()
 
@@ -102,7 +96,7 @@ class BitDECLATRunner:
 
     @staticmethod
     def _calculate_diffset(diff_set, element):
-        return element & ~diff_set
+        return element | diff_set
 
     @staticmethod
     def count_elements_in_array(diff_set):

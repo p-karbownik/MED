@@ -17,7 +17,7 @@ def main():
     decode_result(dr.run(ds, 6), len(ds.transactions), True)
     print("------------------------------------------------")
     bdr = BitDECLATRunner(ds, 6)
-    decode(bdr.run(), len(ds.transactions), True)
+    decode(bdr.run(), True)
 
 
 if __name__ == '__main__':
