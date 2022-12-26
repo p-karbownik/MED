@@ -1,4 +1,4 @@
-from .readDataset import DataSet
+from readDataset import DataSet
 
 
 class FrequentSet:

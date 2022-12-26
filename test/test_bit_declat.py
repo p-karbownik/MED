@@ -1,6 +1,5 @@
-from declat.declat import DECLATRunner
-from declat.declat import decode_result
 from declat.readDataset import read_data_set
+from declat.bit_declat import BitDECLATRunner, decode
 
 
 def test():
@@ -15,14 +14,15 @@ def test():
                        frozenset(['b', 'e', 'f']), frozenset(['a', 'b', 'c', 'e'])
                        }
     ds = read_data_set("../dataset/test2.csv")
-    dr = DECLATRunner()
-    r = dr.run(ds, 2)
+    bdr = BitDECLATRunner(ds, 2)
+    run_result = bdr.run()
     result = set()
 
-    decode_result(r, len(ds.transactions), True)
+    print(len(expected_result))
+    print(len(run_result))
 
-    for res in r:
-        result.add(res.items)
+    for r in run_result:
+        result.add(r.items)
 
     if len(result) != len(expected_result):
         print("Test failed - size difference between expected and actual result")
