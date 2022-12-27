@@ -1,4 +1,4 @@
-from declat.readDataset import read_data_set
+from declat.readBitDataset import read_bit_data_set
 from declat.bit_declat import BitDECLATRunner, decode
 
 
@@ -13,7 +13,7 @@ def test():
                        frozenset(['a', 'c', 'f']), frozenset(['a', 'c', 'h']), frozenset(['b', 'c', 'e']),
                        frozenset(['b', 'e', 'f']), frozenset(['a', 'b', 'c', 'e'])
                        }
-    ds = read_data_set("../dataset/test2.csv")
+    ds = read_bit_data_set("../dataset/test2.csv")
     bdr = BitDECLATRunner(ds, 2)
     run_result = bdr.run()
     result = set()

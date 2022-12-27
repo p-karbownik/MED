@@ -1,4 +1,4 @@
-from .readDataset import DataSet
+from .readBitDataset import BitDataSet
 from bitarray import bitarray
 
 
@@ -29,7 +29,7 @@ class FrequentSet:
 
 class BitDECLATRunner:
 
-    def __init__(self, dataset: DataSet, minimal_support: int):
+    def __init__(self, dataset: BitDataSet, minimal_support: int):
         self.dataset = dataset
         self.minimal_support = minimal_support
         self.elements_diff_set_dict = dict()
