@@ -10,10 +10,10 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--draw_time_charts_mode', type=bool, default=False)
-parser.add_argument('--name', type=str, default="movies")
-parser.add_argument('--support', type=int, default=2)
+parser.add_argument('--name', type=str, default="cinema")
+parser.add_argument('--support', type=int, default=3)
 parser.add_argument('--show_results', type=bool, default=False)
-parser.add_argument('--lattice', type=bool, default=True)
+parser.add_argument('--lattice', type=bool, default=False)
 parser.add_argument('--supp_chart', type=bool, default=True)
 
 args = parser.parse_args()
