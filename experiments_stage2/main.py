@@ -4,10 +4,10 @@ from time_measure import save_result_to_csv
 
 def main():
     dataset_paths = [['ksiazki.csv', 1],
-                     ['movies.csv', 2],
+                     ['movies.csv', 1],
                      ['muzyka.csv', 24],
                      ['politics.csv', 1],
-                     ['cinema.csv', 4]]
+                     ['cinema.csv', 2]]
 
     for p in dataset_paths:
         rows = measure_time("../dataset/" + p[0], p[1])
