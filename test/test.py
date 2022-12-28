@@ -1,5 +1,4 @@
 from declat.declat import DECLATRunner
-from declat.declat import decode_result
 from declat.readDataset import read_data_set
 
 
@@ -18,8 +17,6 @@ def test():
     dr = DECLATRunner()
     r = dr.run(ds, 2)
     result = set()
-
-    decode_result(r, len(ds.transactions), True)
 
     for res in r:
         result.add(res.items)
