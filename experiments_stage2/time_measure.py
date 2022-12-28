@@ -30,7 +30,7 @@ def measure_time(path_to_dataset: str, min_support: int):
 
 
 def save_result_to_csv(rows: dict, path_to_csv: str):
-    fieldnames = ['support_bit', 'time_bit']
+    fieldnames = ['support', 'time']
     print("Saving result to csv file under path: " + path_to_csv)
     os.makedirs(os.path.dirname(path_to_csv), exist_ok=True)
     with open(path_to_csv, 'w+', encoding='UTF8', newline='') as f:

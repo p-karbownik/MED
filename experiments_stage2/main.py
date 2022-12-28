@@ -11,7 +11,7 @@ def main():
 
     for p in dataset_paths:
         rows = measure_time("../dataset/" + p[0], p[1])
-        save_result_to_csv(rows, "../results/time/" + p[0])
+        save_result_to_csv(rows, "../results/time_stage2/" + p[0])
 
 
 if __name__ == '__main__':
