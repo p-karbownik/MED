@@ -65,7 +65,8 @@ class BitDECLATRunner:
             if support >= self.minimal_support:
                 encoded_element = len(self.dataset.elements) * bitarray('0')
                 encoded_element[self.dataset.encode_dict[e]] = True
-                frequent_items.add(FrequentSet(encoded_element, self.elements_diff_set_dict[e], support, self.dataset.decode_dict))
+                frequent_items.add(
+                    FrequentSet(encoded_element, self.elements_diff_set_dict[e], support, self.dataset.decode_dict))
 
         return frequent_items
 
@@ -127,3 +128,16 @@ def decode(result, show_results: bool):
             print(str(item))
         decoded.append([str(item), item.support])
     return decoded
+
+
+def get_support_values_list(results):
+    support_set = set()
+
+    for result in results:
+        support_set.add(result.support)
+
+    return support_set
+
+
+def get_max_support_value(results):
+    return max(get_support_values_list(results))
