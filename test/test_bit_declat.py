@@ -1,25 +1,23 @@
 from declat.readBitDataset import read_bit_data_set
-from declat.bit_declat import BitDECLATRunner, decode
+from declat.bit_declat import BitDECLATRunner
+from bitarray import frozenbitarray
 
 
 def test():
-    expected_result = {frozenset(['a']), frozenset(['b']), frozenset(['c']), frozenset(['e']), frozenset(['f']),
-                       frozenset(['h']), frozenset(['a', 'b']), frozenset(['a', 'c']), frozenset(['a', 'e']),
-                       frozenset(['a', 'f']), frozenset(['a', 'h']),
-                       frozenset(['b', 'c']), frozenset(['b', 'e']), frozenset(['b', 'f']), frozenset(['c', 'e']),
-                       frozenset(['c', 'e']),
-                       frozenset(['c', 'f']), frozenset(['c', 'h']), frozenset(['e', 'f']),
-                       frozenset(['a', 'b', 'c']), frozenset(['a', 'b', 'e']), frozenset(['a', 'c', 'e']),
-                       frozenset(['a', 'c', 'f']), frozenset(['a', 'c', 'h']), frozenset(['b', 'c', 'e']),
-                       frozenset(['b', 'e', 'f']), frozenset(['a', 'b', 'c', 'e'])
-                       }
+    expected_result = {frozenbitarray('100000'), frozenbitarray('010000'), frozenbitarray('001000'),
+                       frozenbitarray('000100'), frozenbitarray('000010'), frozenbitarray('000001'),
+                       frozenbitarray('110000'), frozenbitarray('101000'), frozenbitarray('100100'),
+                       frozenbitarray('100010'), frozenbitarray('100001'), frozenbitarray('011000'),
+                       frozenbitarray('010100'), frozenbitarray('010010'), frozenbitarray('001100'),
+                       frozenbitarray('001010'), frozenbitarray('001001'), frozenbitarray('000110'),
+                       frozenbitarray('111000'), frozenbitarray('110100'), frozenbitarray('101100'),
+                       frozenbitarray('101010'), frozenbitarray('101001'), frozenbitarray('011100'),
+                       frozenbitarray('010110'), frozenbitarray('111100')}
+
     ds = read_bit_data_set("../dataset/test2.csv")
     bdr = BitDECLATRunner(ds, 2)
     run_result = bdr.run()
     result = set()
-
-    print(len(expected_result))
-    print(len(run_result))
 
     for r in run_result:
         result.add(r.items)

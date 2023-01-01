@@ -1,9 +1,10 @@
 from .readBitDataset import BitDataSet
 from bitarray import bitarray
+from bitarray import frozenbitarray
 
 
 class FrequentSet:
-    def __init__(self, items: bitarray, diff_set, support, decode):
+    def __init__(self, items: frozenbitarray, diff_set, support, decode):
         self.support = support
         self.items = items
         self.diff_set = diff_set
@@ -24,7 +25,7 @@ class FrequentSet:
         return self.items == other.items
 
     def __hash__(self):
-        return hash(self.items.tobytes())
+        return hash(self.items)
 
 
 class BitDECLATRunner:
@@ -66,16 +67,14 @@ class BitDECLATRunner:
                 encoded_element = len(self.dataset.elements) * bitarray('0')
                 encoded_element[self.dataset.encode_dict[e]] = True
                 frequent_items.add(
-                    FrequentSet(encoded_element, self.elements_diff_set_dict[e], support, self.dataset.decode_dict))
+                    FrequentSet(frozenbitarray(encoded_element), self.elements_diff_set_dict[e], support,
+                                self.dataset.decode_dict))
 
         return frequent_items
 
     def _count_elements_in_array_by_key(self, key):
         bit_arr = self.elements_diff_set_dict[key]
-        sum_of_bits = 0
-        for bit in bit_arr:
-            sum_of_bits += int(bit)
-        return sum_of_bits
+        return bit_arr.count(1)
 
     def _do_declat(self, previous_rules, classes):
         new_rules = set()
@@ -83,13 +82,14 @@ class BitDECLATRunner:
         for r in previous_rules:
             for c in classes:
                 if not r.items[c]:
-                    new_rule = bitarray.copy(r.items)
+                    new_rule = bitarray(bitarray.copy(r.items))
                     new_rule[c] = True
                     diff_set = self._calculate_diffset(r.diff_set,
                                                        self.elements_diff_set_dict.get(self.dataset.decode_dict[c]))
-                    support = len(self.dataset.transactions) - self.count_elements_in_array(diff_set)
+                    support = len(self.dataset.transactions) - diff_set.count(1)
                     if support >= self.minimal_support:
-                        new_rules.add(FrequentSet(new_rule, diff_set, support, self.dataset.decode_dict))
+                        new_rules.add(
+                            FrequentSet(frozenbitarray(new_rule), diff_set, support, self.dataset.decode_dict))
 
         if len(new_rules) != 0:
             return new_rules.union(self._do_declat(new_rules, self._find_classes(new_rules)))
@@ -110,13 +110,6 @@ class BitDECLATRunner:
     @staticmethod
     def _calculate_diffset(diff_set, element):
         return element | diff_set
-
-    @staticmethod
-    def count_elements_in_array(diff_set):
-        sum_of_bits = 0
-        for bit in diff_set:
-            sum_of_bits += int(bit)
-        return sum_of_bits
 
 
 def decode(result, show_results: bool):
