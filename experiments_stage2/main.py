@@ -5,9 +5,9 @@ from time_measure import save_result_to_csv
 def main():
     dataset_paths = [['ksiazki.csv', 1],
                      ['movies.csv', 1],
-                     ['muzyka.csv', 20],    # TODO: Try smaller values, bigger than 10
+                     ['muzyka.csv', 11],
                      ['politics.csv', 1],
-                     ['cinema.csv', 2]]     # TODO: Try with 1
+                     ['cinema.csv', 2]]
 
     for p in dataset_paths:
         rows = measure_time("../dataset/" + p[0], p[1])
